@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Stackly | User Dashboard</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+   <style>
+       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+       :root {
+           --primary: #6366f1;
+           --primary-dark: #4f46e5;
+           --accent: #06b6d4;
+           --success: #10b981;
+           --warning: #f59e0b;
+           --danger: #ef4444;
+       }
+
+       body {
+           font-family: 'Inter', sans-serif;
+           background: #0f172a;
+           color: #e2e8f0;
+       }
+
+       .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+       /* Glassmorphism */
+       .glass {
+           background: rgba(30, 41, 59, 0.7);
+           backdrop-filter: blur(12px);
+           border: 1px solid rgba(255, 255, 255, 0.08);
+       }
+
+       .glass-card {
+           background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+           backdrop-filter: blur(10px);
+           border: 1px solid rgba(99, 102, 241, 0.15);
+           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+       }
+
+       /* Gradients */
+       .gradient-text {
+           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+           -webkit-background-clip: text;
+           -webkit-text-fill-color: transparent;
+       }
+
+       .gradient-border {
+           position: relative;
+           background: rgba(30, 41, 59, 0.8);
+       }
+       .gradient-border::before {
+           content: '';
+           position: absolute;
+           inset: 0;
+           border-radius: inherit;
+           padding: 1px;
+           background: linear-gradient(135deg, #667eea, #764ba2, #06b6d4);
+           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+           mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+           -webkit-mask-composite: xor;
+           mask-composite: exclude;
+       }
+
+       /* Animations */
+       @keyframes float {
+           0%, 100% { transform: translateY(0px); }
+           50% { transform: translateY(-10px); }
+       }
+       .animate-float { animation: float 3s ease-in-out infinite; }
+
+       @keyframes pulse-glow {
+           0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+           50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
+       }
+       .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+       @keyframes slideIn {
+           from { opacity: 0; transform: translateY(20px); }
+           to { opacity: 1; transform: translateY(0); }
+       }
+       .slide-in { animation: slideIn 0.5s ease-out forwards; }
+
+       /* Custom Scrollbar */
+       ::-webkit-scrollbar { width: 6px; }
+       ::-webkit-scrollbar-track { background: #0f172a; }
+       ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+       ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+
+       /* Progress Ring */
+       .progress-ring circle {
+           transition: stroke-dashoffset 0.5s ease-in-out;
+           transform: rotate(-90deg);
+           transform-origin: 50% 50%;
+       }
+
+       /* Activity Heatmap Grid */
+       .heatmap-cell {
+           width: 12px;
+           height: 12px;
+           border-radius: 2px;
+           transition: all 0.3s ease;
+       }
+       .heatmap-cell:hover { transform: scale(1.2); }
+
+       /* Toggle Switch */
+       .toggle-checkbox:checked {
+           right: 0;
+           border-color: #6366f1;
+       }
+       .toggle-checkbox:checked + .toggle-label {
+           background-color: #6366f1;
+       }
+   </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+
+   <!-- Background Effects -->
+   <div class="fixed inset-0 z-0">
+       <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl animate-pulse"></div>
+       <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+   </div>
+
+   <!-- Layout -->
+   <div class="relative z-10 flex h-screen">
+       
+       <!-- Sidebar -->
+       <aside class="w-20 lg:w-72 glass flex flex-col transition-all duration-300 border-r border-white/5">
+           <!-- Logo -->
+           <div class="flex items-center gap-2 group cursor-pointer">
+
+    <!-- Logo Image -->
+    <img src="img/logo-green.png" 
+    class="w-8 h-8 object-contain transition-transform group-hover:scale-110">
+
+    <!-- Logo Text -->
+    <span class="text-xl font-bold tracking-tight">
+        Stackly<span class="text-green-500">.</span>
+    </span>
+
+</div>
+
+           <!-- Navigation -->
+           <nav class="flex-1 py-6 px-3 space-y-1">
+               <a href="#" class="flex items-center px-3 py-3 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 group relative overflow-hidden">
+                   <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                   <i class="fas fa-home w-6 text-center"></i>
+                   <span class="hidden lg:block ml-3 font-medium">Overview</span>
+               </a>
+               <a href="#" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
+                   <i class="fas fa-chart-pie w-6 text-center group-hover:text-indigo-400 transition-colors"></i>
+                   <span class="hidden lg:block ml-3 font-medium">Analytics</span>
+               </a>
+               <a href="#" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
+                   <i class="fas fa-folder-open w-6 text-center group-hover:text-cyan-400 transition-colors"></i>
+                   <span class="hidden lg:block ml-3 font-medium">Projects</span>
+                   <span class="hidden lg:flex ml-auto bg-indigo-500/20 text-indigo-300 text-xs px-2 py-0.5 rounded-full">12</span>
+               </a>
+               <a href="#" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
+                   <i class="fas fa-users w-6 text-center group-hover:text-pink-400 transition-colors"></i>
+                   <span class="hidden lg:block ml-3 font-medium">Team</span>
+               </a>
+               <a href="#" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
+                   <i class="fas fa-wallet w-6 text-center group-hover:text-emerald-400 transition-colors"></i>
+                   <span class="hidden lg:block ml-3 font-medium">Billing</span>
+               </a>
+           </nav>
+
+           <!-- Storage Widget -->
+           <div class="hidden lg:block p-4 mx-4 mb-4 rounded-xl bg-white/5 border border-white/5">
+               <div class="flex justify-between items-center mb-2">
+                   <span class="text-xs text-gray-400">Storage</span>
+                   <span class="text-xs font-mono text-indigo-400">75%</span>
+               </div>
+               <div class="w-full bg-gray-700/50 rounded-full h-2 overflow-hidden">
+                   <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full rounded-full" style="width: 75%"></div>
+               </div>
+               <div class="mt-2 text-xs text-gray-500">15GB of 20GB used</div>
+           </div>
+
+           <!-- User -->
+           <div class="p-4 border-t border-white/5">
+               <div class="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-2 rounded-xl transition-colors">
+                   <div class="relative">
+                       <img src="https://ui-avatars.com/api/?name=Alex+Morgan&background=6366f1&color=fff" class="w-10 h-10 rounded-full border-2 border-indigo-500/30">
+                       <div class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-900"></div>
+                   </div>
+                   <div class="hidden lg:block">
+                       <div class="text-sm font-semibold text-white">Alex Morgan</div>
+                       <div class="text-xs text-gray-400">Pro Plan</div>
+                   </div>
+                   <i class="hidden lg:block fas fa-chevron-right ml-auto text-xs text-gray-500"></i>
+               </div>
+           </div>
+       </aside>
+
+       <!-- Main Content -->
+       <main class="flex-1 overflow-y-auto">
+           <!-- Header -->
+           <header class="sticky top-0 z-30 glass border-b border-white/5 px-8 py-4 flex items-center justify-between">
+               <div>
+                   <h1 class="text-2xl font-bold text-white">Welcome back, Alex! 👋</h1>
+                   <p class="text-sm text-gray-400">Here's what's happening with your projects today.</p>
+               </div>
+               <div class="flex items-center gap-4">
+                   <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all relative">
+                       <i class="fas fa-bell"></i>
+                       <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full animate-ping"></span>
+                       <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full"></span>
+                   </button>
+                   <button class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-all flex items-center gap-2 shadow-lg shadow-indigo-500/25">
+                       <i class="fas fa-plus"></i> New Project
+                   </button>
+               </div>
+           </header>
+
+           <div class="p-8 space-y-8">
+               
+               <!-- Stats Grid -->
+               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                   <!-- Stat 1 -->
+                   <div class="glass-card rounded-2xl p-6 relative overflow-hidden group slide-in" style="animation-delay: 0.1s;">
+                       <div class="absolute -right-6 -top-6 w-24 h-24 bg-indigo-500/20 rounded-full blur-2xl group-hover:bg-indigo-500/30 transition-colors"></div>
+                       <div class="flex justify-between items-start mb-4">
+                           <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                               <i class="fas fa-eye text-xl"></i>
+                           </div>
+                           <span class="text-xs font-medium text-emerald-400 flex items-center gap-1 bg-emerald-500/10 px-2 py-1 rounded-full">
+                               <i class="fas fa-arrow-up"></i> 12.5%
+                           </span>
+                       </div>
+                       <div class="text-3xl font-bold text-white mb-1">24.5K</div>
+                       <div class="text-sm text-gray-400">Total Views</div>
+                   </div>
+
+                   <!-- Stat 2 -->
+                   <div class="glass-card rounded-2xl p-6 relative overflow-hidden group slide-in" style="animation-delay: 0.2s;">
+                       <div class="absolute -right-6 -top-6 w-24 h-24 bg-cyan-500/20 rounded-full blur-2xl group-hover:bg-cyan-500/30 transition-colors"></div>
+                       <div class="flex justify-between items-start mb-4">
+                           <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                               <i class="fas fa-mouse-pointer text-xl"></i>
+                           </div>
+                           <span class="text-xs font-medium text-emerald-400 flex items-center gap-1 bg-emerald-500/10 px-2 py-1 rounded-full">
+                               <i class="fas fa-arrow-up"></i> 8.2%
+                           </span>
+                       </div>
+                       <div class="text-3xl font-bold text-white mb-1">1,429</div>
+                       <div class="text-sm text-gray-400">Active Sessions</div>
+                   </div>
+
+                   <!-- Stat 3 -->
+                   <div class="glass-card rounded-2xl p-6 relative overflow-hidden group slide-in" style="animation-delay: 0.3s;">
+                       <div class="absolute -right-6 -top-6 w-24 h-24 bg-rose-500/20 rounded-full blur-2xl group-hover:bg-rose-500/30 transition-colors"></div>
+                       <div class="flex justify-between items-start mb-4">
+                           <div class="w-12 h-12 rounded-xl bg-rose-500/20 flex items-center justify-center text-rose-400">
+                               <i class="fas fa-shopping-cart text-xl"></i>
+                           </div>
+                           <span class="text-xs font-medium text-rose-400 flex items-center gap-1 bg-rose-500/10 px-2 py-1 rounded-full">
+                               <i class="fas fa-arrow-down"></i> 2.1%
+                           </span>
+                       </div>
+                       <div class="text-3xl font-bold text-white mb-1">$12,400</div>
+                       <div class="text-sm text-gray-400">Revenue</div>
+                   </div>
+
+                   <!-- Stat 4 -->
+                   <div class="glass-card rounded-2xl p-6 relative overflow-hidden group slide-in" style="animation-delay: 0.4s;">
+                       <div class="absolute -right-6 -top-6 w-24 h-24 bg-amber-500/20 rounded-full blur-2xl group-hover:bg-amber-500/30 transition-colors"></div>
+                       <div class="flex justify-between items-start mb-4">
+                           <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
+                               <i class="fas fa-star text-xl"></i>
+                           </div>
+                           <span class="text-xs font-medium text-emerald-400 flex items-center gap-1 bg-emerald-500/10 px-2 py-1 rounded-full">
+                               <i class="fas fa-arrow-up"></i> 4.3%
+                           </span>
+                       </div>
+                       <div class="text-3xl font-bold text-white mb-1">4.8</div>
+                       <div class="text-sm text-gray-400">Rating Score</div>
+                   </div>
+               </div>
+
+               <!-- Main Dashboard Grid -->
+               <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                   
+                   <!-- Chart Section -->
+                   <div class="lg:col-span-2 glass-card rounded-2xl p-6 slide-in" style="animation-delay: 0.5s;">
+                       <div class="flex justify-between items-center mb-6">
+                           <h3 class="text-lg font-semibold text-white">Activity Overview</h3>
+                           <div class="flex gap-2">
+                               <button class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-300 hover:bg-white/10 transition-colors">Week</button>
+                               <button class="px-3 py-1 rounded-lg bg-indigo-500/20 text-xs text-indigo-300 border border-indigo-500/30">Month</button>
+                               <button class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-300 hover:bg-white/10 transition-colors">Year</button>
+                           </div>
+                       </div>
+                       
+                       <!-- Custom SVG Chart -->
+                       <div class="relative h-64 w-full">
+                           <svg class="w-full h-full" viewBox="0 0 800 200" preserveAspectRatio="none">
+                               <!-- Grid Lines -->
+                               <line x1="0" y1="50" x2="800" y2="50" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4"/>
+                               <line x1="0" y1="100" x2="800" y2="100" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4"/>
+                               <line x1="0" y1="150" x2="800" y2="150" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4"/>
+                               
+                               <!-- Gradient Definition -->
+                               <defs>
+                                   <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                                       <stop offset="0%" stop-color="#6366f1" stop-opacity="0.5"/>
+                                       <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                                   </linearGradient>
+                               </defs>
+                               
+                               <!-- Area Path -->
+                               <path d="M0,150 C100,120 200,80 300,100 C400,120 500,60 600,80 C700,100 800,40 800,40 L800,200 L0,200 Z" 
+                                     fill="url(#chartGradient)" opacity="0.6"/>
+                               
+                               <!-- Line Path -->
+                               <path d="M0,150 C100,120 200,80 300,100 C400,120 500,60 600,80 C700,100 800,40 800,40" 
+                                     fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round"/>
+                               
+                               <!-- Data Points -->
+                               <circle cx="300" cy="100" r="4" fill="#fff" class="animate-pulse"/>
+                               <circle cx="600" cy="80" r="4" fill="#fff" class="animate-pulse" style="animation-delay: 0.5s"/>
+                           </svg>
+                           
+                           <!-- X Axis Labels -->
+                           <div class="flex justify-between text-xs text-gray-500 mt-2 font-mono">
+                               <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                           </div>
+                       </div>
+                   </div>
+
+                   <!-- Profile & Security -->
+                   <div class="space-y-6">
+                       <!-- Profile Completion -->
+                       <div class="glass-card rounded-2xl p-6 slide-in" style="animation-delay: 0.6s;">
+                           <h3 class="text-lg font-semibold text-white mb-4">Profile Completion</h3>
+                           <div class="flex items-center justify-center relative">
+                               <svg class="w-32 h-32 progress-ring">
+                                   <circle cx="64" cy="64" r="56" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"/>
+                                   <circle cx="64" cy="64" r="56" stroke="#6366f1" stroke-width="8" fill="none" 
+                                           stroke-dasharray="351.86" stroke-dashoffset="70" stroke-linecap="round"/>
+                               </svg>
+                               <div class="absolute text-center">
+                                   <div class="text-2xl font-bold text-white">80%</div>
+                                   <div class="text-xs text-gray-400">Complete</div>
+                               </div>
+                           </div>
+                           <div class="mt-4 space-y-2">
+                               <div class="flex items-center gap-2 text-sm text-emerald-400">
+                                   <i class="fas fa-check-circle"></i>
+                                   <span class="text-gray-300">Email Verified</span>
+                               </div>
+                               <div class="flex items-center gap-2 text-sm text-emerald-400">
+                                   <i class="fas fa-check-circle"></i>
+                                   <span class="text-gray-300">Phone Added</span>
+                               </div>
+                               <div class="flex items-center gap-2 text-sm text-gray-500">
+                                   <i class="far fa-circle"></i>
+                                   <span>Complete Bio</span>
+                               </div>
+                           </div>
+                       </div>
+
+                       <!-- Security Status -->
+                       <div class="glass-card rounded-2xl p-6 slide-in" style="animation-delay: 0.7s;">
+                           <div class="flex justify-between items-center mb-4">
+                               <h3 class="text-lg font-semibold text-white">Security</h3>
+                               <span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs border border-emerald-500/30">Secure</span>
+                           </div>
+                           <div class="space-y-4">
+                               <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                                   <div class="flex items-center gap-3">
+                                       <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                                           <i class="fas fa-fingerprint"></i>
+                                       </div>
+                                       <div>
+                                           <div class="text-sm font-medium text-white">2FA Enabled</div>
+                                           <div class="text-xs text-gray-400">Authenticator App</div>
+                                       </div>
+                                   </div>
+                                   <div class="w-12 h-6 rounded-full bg-emerald-500 relative cursor-pointer">
+                                       <div class="absolute right-1 top-1 w-4 h-4 rounded-full bg-white shadow-lg"></div>
+                                   </div>
+                               </div>
+                               
+                               <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                                   <div class="flex items-center gap-3">
+                                       <div class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                                           <i class="fas fa-key"></i>
+                                       </div>
+                                       <div>
+                                           <div class="text-sm font-medium text-white">Password</div>
+                                           <div class="text-xs text-gray-400">Last changed 2d ago</div>
+                                       </div>
+                                   </div>
+                                   <button class="text-xs text-indigo-400 hover:text-indigo-300">Update</button>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+               <!-- Recent Activity & Quick Actions -->
+               <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                   <!-- Recent Projects -->
+                   <div class="lg:col-span-2 glass-card rounded-2xl p-6 slide-in" style="animation-delay: 0.8s;">
+                       <div class="flex justify-between items-center mb-6">
+                           <h3 class="text-lg font-semibold text-white">Recent Projects</h3>
+                           <button class="text-sm text-indigo-400 hover:text-indigo-300">View All</button>
+                       </div>
+                       <div class="space-y-4">
+                           <div class="group flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:border-indigo-500/30 transition-all cursor-pointer">
+                               <div class="flex items-center gap-4">
+                                   <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white font-bold text-lg">
+                                       D
+                                   </div>
+                                   <div>
+                                       <div class="font-medium text-white group-hover:text-indigo-300 transition-colors">Dashboard Redesign</div>
+                                       <div class="text-sm text-gray-400">Last edited 2h ago</div>
+                                   </div>
+                               </div>
+                               <div class="flex items-center gap-4">
+                                   <div class="flex -space-x-2">
+                                       <img class="w-8 h-8 rounded-full border-2 border-slate-800" src="https://ui-avatars.com/api/?name=John&background=random">
+                                       <img class="w-8 h-8 rounded-full border-2 border-slate-800" src="https://ui-avatars.com/api/?name=Sarah&background=random">
+                                   </div>
+                                   <div class="w-32 h-2 bg-gray-700 rounded-full overflow-hidden">
+                                       <div class="w-3/4 h-full bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+                                   </div>
+                                   <span class="text-xs text-gray-400 font-mono">75%</span>
+                               </div>
+                           </div>
+
+                           <div class="group flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer">
+                               <div class="flex items-center gap-4">
+                                   <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg">
+                                       A
+                                   </div>
+                                   <div>
+                                       <div class="font-medium text-white group-hover:text-cyan-300 transition-colors">API Integration</div>
+                                       <div class="text-sm text-gray-400">Last edited 5h ago</div>
+                                   </div>
+                               </div>
+                               <div class="flex items-center gap-4">
+                                   <div class="flex -space-x-2">
+                                       <img class="w-8 h-8 rounded-full border-2 border-slate-800" src="https://ui-avatars.com/api/?name=Mike&background=random">
+                                   </div>
+                                   <div class="w-32 h-2 bg-gray-700 rounded-full overflow-hidden">
+                                       <div class="w-1/2 h-full bg-gradient-to-r from-cyan-500 to-blue-500"></div>
+                                   </div>
+                                   <span class="text-xs text-gray-400 font-mono">50%</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <!-- Contribution Heatmap -->
+                   <div class="glass-card rounded-2xl p-6 slide-in" style="animation-delay: 0.9s;">
+                       <h3 class="text-lg font-semibold text-white mb-4">Activity</h3>
+                       <div class="grid grid-cols-7 gap-1">
+                           <!-- Generated by JS -->
+                           <div id="heatmap-grid" class="contents"></div>
+                       </div>
+                       <div class="mt-4 flex justify-between items-center text-xs text-gray-400">
+                           <span>Less</span>
+                           <div class="flex gap-1">
+                               <div class="w-3 h-3 rounded bg-gray-800"></div>
+                               <div class="w-3 h-3 rounded bg-indigo-900/50"></div>
+                               <div class="w-3 h-3 rounded bg-indigo-700"></div>
+                               <div class="w-3 h-3 rounded bg-indigo-500"></div>
+                               <div class="w-3 h-3 rounded bg-indigo-400"></div>
+                           </div>
+                           <span>More</span>
+                       </div>
+                   </div>
+               </div>
+
+           </div>
+       </main>
+   </div>
+
+   <script>
+       // Generate Heatmap
+       const heatmapGrid = document.getElementById('heatmap-grid');
+       const levels = ['bg-gray-800', 'bg-indigo-900/50', 'bg-indigo-700', 'bg-indigo-500', 'bg-indigo-400'];
+       
+       for (let i = 0; i < 49; i++) {
+           const cell = document.createElement('div');
+           const level = Math.floor(Math.random() * levels.length);
+           cell.className = `heatmap-cell ${levels[level]}`;
+           cell.title = `${Math.floor(Math.random() * 10)} contributions`;
+           heatmapGrid.appendChild(cell);
+       }
+
+       // Animate Progress Ring on Load
+       window.addEventListener('load', () => {
+           const circle = document.querySelector('.progress-ring circle:nth-child(2)');
+           const radius = circle.r.baseVal.value;
+           const circumference = radius * 2 * Math.PI;
+           
+           circle.style.strokeDasharray = `${circumference} ${circumference}`;
+           circle.style.strokeDashoffset = circumference;
+           
+           const offset = circumference - (80 / 100) * circumference;
+           setTimeout(() => {
+               circle.style.strokeDashoffset = offset;
+           }, 500);
+       });
+
+       // Simulate Real-time Updates
+       setInterval(() => {
+           // Update random stat
+           const stats = document.querySelectorAll('.text-3xl');
+           const randomStat = stats[Math.floor(Math.random() * stats.length)];
+           randomStat.style.opacity = '0.5';
+           setTimeout(() => randomStat.style.opacity = '1', 200);
+       }, 3000);
+   </script>
+</body>
+</html>

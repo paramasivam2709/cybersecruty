@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Page Not Found</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+body {
+    font-family: 'Inter', sans-serif;
+    background: #050505;
+    color: white;
+    overflow: hidden;
+}
+
+/* Glow background */
+.glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(34,197,94,0.4), transparent);
+    filter: blur(80px);
+    animation: float 6s ease-in-out infinite;
+}
+
+.glow2 {
+    bottom: 0;
+    right: 0;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-30px); }
+}
+
+/* 404 animation */
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+</style>
+
+</head>
+
+<body class="flex items-center justify-center min-h-screen text-center relative">
+
+<div class="glow"></div>
+<div class="glow glow2"></div>
+
+<div class="z-10">
+
+    <!-- 404 TEXT -->
+    <h1 class="text-8xl font-extrabold text-green-500 bounce">404</h1>
+
+    <h2 class="text-2xl mt-4 font-semibold">Page Not Found</h2>
+
+    <p class="text-gray-400 mt-2 mb-8">
+        Oops! The page you are looking for doesn't exist.
+    </p>
+
+    <!-- BUTTONS -->
+    <div class="flex justify-center gap-4 flex-wrap">
+
+        <!-- Back Button -->
+        <button onclick="goBack()"
+        class="px-6 py-3 border border-gray-600 rounded-full hover:border-green-500 transition">
+            ← Go Back
+        </button>
+
+        <!-- Home Button -->
+        <a href="index.html"
+        class="px-6 py-3 bg-green-500 text-black font-bold rounded-full hover:bg-green-400 transition">
+            Go Home
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+</body>
+</html>

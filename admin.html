@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Stackly | Cybersecurity Command Center</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+   <style>
+       @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;700&family=Rajdhani:wght@300;500;700&display=swap');
+
+       :root {
+           --neon-green: #0f0;
+           --neon-red: #ff003c;
+           --neon-blue: #00f3ff;
+           --dark-bg: #050505;
+           --panel-bg: rgba(20, 20, 30, 0.7);
+       }
+
+       body {
+           background-color: var(--dark-bg);
+           color: #e0e0e0;
+           font-family: 'Rajdhani', sans-serif;
+           overflow: hidden;
+           margin: 0;
+           height: 100vh;
+           width: 100vw;
+       }
+
+       /* Custom Scrollbar */
+       ::-webkit-scrollbar {
+           width: 6px;
+       }
+       ::-webkit-scrollbar-track {
+           background: #0a0a0a;
+       }
+       ::-webkit-scrollbar-thumb {
+           background: #333;
+           border-radius: 3px;
+       }
+       ::-webkit-scrollbar-thumb:hover {
+           background: var(--neon-blue);
+       }
+
+       /* CRT Scanline Effect */
+       .scanlines {
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: linear-gradient(
+               to bottom,
+               rgba(255,255,255,0),
+               rgba(255,255,255,0) 50%,
+               rgba(0,0,0,0.1) 50%,
+               rgba(0,0,0,0.1)
+           );
+           background-size: 100% 4px;
+           pointer-events: none;
+           z-index: 9999;
+           opacity: 0.6;
+       }
+
+       /* Glassmorphism Panels */
+       .glass-panel {
+           background: var(--panel-bg);
+           backdrop-filter: blur(12px);
+           -webkit-backdrop-filter: blur(12px);
+           border: 1px solid rgba(255, 255, 255, 0.08);
+           box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+       }
+
+       .glass-panel:hover {
+           border-color: rgba(0, 243, 255, 0.3);
+           box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+       }
+
+       /* Animations */
+       @keyframes pulse-red {
+           0% { box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.4); }
+           70% { box-shadow: 0 0 0 10px rgba(255, 0, 60, 0); }
+           100% { box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }
+       }
+
+       @keyframes pulse-green {
+           0% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.4); }
+           70% { box-shadow: 0 0 0 10px rgba(0, 255, 0, 0); }
+           100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); }
+       }
+
+       .animate-pulse-red {
+           animation: pulse-red 2s infinite;
+       }
+
+       .animate-pulse-green {
+           animation: pulse-green 2s infinite;
+       }
+
+       .glitch-text {
+           position: relative;
+       }
+       
+       .glitch-text::before, .glitch-text::after {
+           content: attr(data-text);
+           position: absolute;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: var(--dark-bg);
+       }
+
+       .glitch-text::before {
+           left: 2px;
+           text-shadow: -1px 0 #ff00c1;
+           clip: rect(44px, 450px, 56px, 0);
+           animation: glitch-anim 5s infinite linear alternate-reverse;
+       }
+
+       .glitch-text::after {
+           left: -2px;
+           text-shadow: -1px 0 #00fff9;
+           clip: rect(44px, 450px, 56px, 0);
+           animation: glitch-anim2 5s infinite linear alternate-reverse;
+       }
+
+       @keyframes glitch-anim {
+           0% { clip: rect(31px, 9999px, 94px, 0); }
+           20% { clip: rect(6px, 9999px, 13px, 0); }
+           40% { clip: rect(68px, 9999px, 89px, 0); }
+           60% { clip: rect(12px, 9999px, 55px, 0); }
+           80% { clip: rect(95px, 9999px, 14px, 0); }
+           100% { clip: rect(43px, 9999px, 72px, 0); }
+       }
+
+       @keyframes glitch-anim2 {
+           0% { clip: rect(65px, 9999px, 99px, 0); }
+           20% { clip: rect(4px, 9999px, 30px, 0); }
+           40% { clip: rect(88px, 9999px, 12px, 0); }
+           60% { clip: rect(23px, 9999px, 67px, 0); }
+           80% { clip: rect(11px, 9999px, 43px, 0); }
+           100% { clip: rect(76px, 9999px, 2px, 0); }
+       }
+
+       /* Loader */
+       .loader-ring {
+           display: inline-block;
+           position: relative;
+           width: 80px;
+           height: 80px;
+       }
+       .loader-ring div {
+           box-sizing: border-box;
+           display: block;
+           position: absolute;
+           width: 64px;
+           height: 64px;
+           margin: 8px;
+           border: 4px solid var(--neon-blue);
+           border-radius: 50%;
+           animation: loader-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+           border-color: var(--neon-blue) transparent transparent transparent;
+       }
+       .loader-ring div:nth-child(1) { animation-delay: -0.45s; }
+       .loader-ring div:nth-child(2) { animation-delay: -0.3s; }
+       .loader-ring div:nth-child(3) { animation-delay: -0.15s; }
+       @keyframes loader-ring {
+           0% { transform: rotate(0deg); }
+           100% { transform: rotate(360deg); }
+       }
+
+       /* Utility */
+       .font-mono { font-family: 'JetBrains Mono', monospace; }
+       .text-neon-green { color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green); }
+       .text-neon-red { color: var(--neon-red); text-shadow: 0 0 5px var(--neon-red); }
+       .text-neon-blue { color: var(--neon-blue); text-shadow: 0 0 5px var(--neon-blue); }
+       .border-neon-blue { border-color: var(--neon-blue); }
+       
+       .grid-bg {
+           background-image: 
+               linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+               linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+           background-size: 30px 30px;
+       }
+   </style>
+</head>
+<body class="grid-bg">
+
+   <!-- CRT Overlay -->
+   <div class="scanlines"></div>
+
+   <!-- Boot Sequence Overlay -->
+   <div id="boot-screen" class="fixed inset-0 bg-black z-[100] flex flex-col items-center justify-center font-mono text-green-500 p-10">
+       <div class="w-full max-w-2xl">
+           <div id="boot-log" class="text-sm mb-4 h-64 overflow-hidden"></div>
+           <div class="w-full bg-gray-900 h-2 rounded overflow-hidden border border-green-800">
+               <div id="boot-bar" class="h-full bg-green-500 w-0 transition-all duration-300"></div>
+           </div>
+           <div class="mt-2 flex justify-between text-xs text-green-700">
+               <span>SYSTEM_INIT</span>
+               <span id="boot-percent">0%</span>
+           </div>
+       </div>
+   </div>
+
+   <!-- Main Layout -->
+   <div class="flex h-screen relative z-10">
+       
+       <!-- Sidebar -->
+       <aside class="w-20 lg:w-64 glass-panel flex flex-col justify-between transition-all duration-300 z-20 border-r border-white/10">
+           <div>
+               <div class="h-20 flex items-center justify-center lg:justify-start lg:px-6 border-b border-white/10">
+                   <i class="fas fa-shield-alt text-3xl text-neon-blue animate-pulse"></i>
+                   <span class="hidden lg:block ml-3 text-2xl font-bold tracking-widest glitch-text" data-text="Stackly">Stackly</span>
+               </div>
+
+               <nav class="mt-8 flex flex-col gap-2 px-2">
+                   <a href="#" class="flex items-center p-3 rounded-lg bg-white/5 text-neon-blue border-l-4 border-neon-blue shadow-[0_0_15px_rgba(0,243,255,0.2)]">
+                       <i class="fas fa-chart-line w-6 text-center"></i>
+                       <span class="hidden lg:block ml-3 font-medium">Dashboard</span>
+                   </a>
+                   <a href="#" class="flex items-center p-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors group">
+                       <i class="fas fa-network-wired w-6 text-center group-hover:text-neon-green transition-colors"></i>
+                       <span class="hidden lg:block ml-3 font-medium">Network</span>
+                   </a>
+                   <a href="#" class="flex items-center p-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors group">
+                       <i class="fas fa-bug w-6 text-center group-hover:text-neon-red transition-colors"></i>
+                       <span class="hidden lg:block ml-3 font-medium">Threats</span>
+                       <span class="hidden lg:flex ml-auto bg-red-500/20 text-red-400 text-xs px-2 py-0.5 rounded border border-red-500/30">12</span>
+                   </a>
+                   <a href="#" class="flex items-center p-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors group">
+                       <i class="fas fa-file-code w-6 text-center group-hover:text-yellow-400 transition-colors"></i>
+                       <span class="hidden lg:block ml-3 font-medium">Logs</span>
+                   </a>
+                   <a href="#" class="flex items-center p-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors group">
+                       <i class="fas fa-users w-6 text-center group-hover:text-purple-400 transition-colors"></i>
+                       <span class="hidden lg:block ml-3 font-medium">Users</span>
+                   </a>
+               </nav>
+           </div>
+
+           <div class="p-4 border-t border-white/10">
+               <div class="flex items-center gap-3">
+                   <img src="https://ui-avatars.com/api/?name=Admin+User&background=0f0&color=000" class="w-10 h-10 rounded border border-green-500/50">
+                   <div class="hidden lg:block">
+                       <div class="text-sm font-bold text-white">Admin_01</div>
+                       <div class="text-xs text-green-400 flex items-center gap-1">
+                           <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Online
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </aside>
+
+       <!-- Main Content -->
+       <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+           
+           <!-- Header -->
+           <header class="h-20 glass-panel border-b border-white/10 flex items-center justify-between px-6 z-20">
+               <div class="flex items-center gap-4">
+                   <h1 class="text-2xl font-bold text-white tracking-wide">SECURITY <span class="text-neon-blue">OVERVIEW</span></h1>
+                   <div class="hidden md:flex items-center gap-2 text-xs font-mono text-gray-500 bg-black/30 px-3 py-1 rounded border border-white/5">
+                       <i class="fas fa-server text-neon-blue"></i>
+                       <span>SERVER: US-EAST-1</span>
+                       <span class="w-1 h-1 bg-gray-500 rounded-full"></span>
+                       <span>LATENCY: 24ms</span>
+                   </div>
+               </div>
+
+               <div class="flex items-center gap-6">
+                   <!-- Search -->
+                   <div class="relative hidden md:block group">
+                       <input type="text" placeholder="Search logs..." class="bg-black/40 border border-white/10 rounded-full py-1.5 px-4 pl-10 text-sm text-gray-300 focus:outline-none focus:border-neon-blue focus:shadow-[0_0_10px_rgba(0,243,255,0.3)] transition-all w-64">
+                       <i class="fas fa-search absolute left-3.5 top-2.5 text-gray-500 group-focus-within:text-neon-blue"></i>
+                   </div>
+
+                   <!-- Notifications -->
+                   <button class="relative text-gray-400 hover:text-white transition-colors">
+                       <i class="fas fa-bell text-xl"></i>
+                       <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-ping"></span>
+                       <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border border-black"></span>
+                   </button>
+                   
+                   <!-- Time -->
+                   <div class="text-right hidden sm:block">
+                       <div id="clock-time" class="text-xl font-mono font-bold text-white leading-none">00:00:00</div>
+                       <div id="clock-date" class="text-xs text-gray-500 font-mono uppercase">YYYY-MM-DD</div>
+                   </div>
+               </div>
+           </header>
+
+           <!-- Dashboard Content Scrollable -->
+           <div class="flex-1 overflow-y-auto p-6 relative">
+               
+               <!-- Top Stats Row -->
+               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                   <!-- Stat Card 1 -->
+                   <div class="glass-panel rounded-xl p-5 relative overflow-hidden group">
+                       <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                           <i class="fas fa-shield-virus text-6xl text-neon-blue"></i>
+                       </div>
+                       <div class="text-gray-400 text-sm font-medium mb-1">THREAT LEVEL</div>
+                       <div class="text-3xl font-bold text-white mb-2 flex items-center gap-2">
+                           ELEVATED
+                           <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+                       </div>
+                       <div class="w-full bg-gray-700 h-1.5 rounded-full overflow-hidden">
+                           <div class="bg-gradient-to-r from-green-500 to-yellow-500 h-full w-[65%]"></div>
+                       </div>
+                       <div class="mt-2 text-xs text-gray-500 flex justify-between">
+                           <span>Last Scan: 2m ago</span>
+                           <span class="text-yellow-500">+2 Alerts</span>
+                       </div>
+                   </div>
+
+                   <!-- Stat Card 2 -->
+                   <div class="glass-panel rounded-xl p-5 relative overflow-hidden group">
+                       <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                           <i class="fas fa-ban text-6xl text-neon-red"></i>
+                       </div>
+                       <div class="text-gray-400 text-sm font-medium mb-1">BLOCKED ATTEMPTS</div>
+                       <div class="text-3xl font-bold text-neon-red mb-2 font-mono" id="blocked-count">14,293</div>
+                       <div class="flex items-center gap-2 text-xs">
+                           <span class="bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded border border-red-500/30">+12%</span>
+                           <span class="text-gray-500">vs last hour</span>
+                       </div>
+                   </div>
+
+                   <!-- Stat Card 3 -->
+                   <div class="glass-panel rounded-xl p-5 relative overflow-hidden group">
+                       <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                           <i class="fas fa-lock text-6xl text-neon-green"></i>
+                       </div>
+                       <div class="text-gray-400 text-sm font-medium mb-1">ENCRYPTION STATUS</div>
+                       <div class="text-3xl font-bold text-neon-green mb-2">AES-256</div>
+                       <div class="flex items-center gap-2 text-xs text-gray-500">
+                           <i class="fas fa-check-circle text-green-500"></i>
+                           <span>All systems secure</span>
+                       </div>
+                   </div>
+
+                   <!-- Stat Card 4 -->
+                   <div class="glass-panel rounded-xl p-5 relative overflow-hidden group">
+                       <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                           <i class="fas fa-microchip text-6xl text-purple-500"></i>
+                       </div>
+                       <div class="text-gray-400 text-sm font-medium mb-1">CPU LOAD</div>
+                       <div class="flex items-end gap-2 mb-2">
+                           <div class="text-3xl font-bold text-white font-mono" id="cpu-val">42%</div>
+                           <div class="h-8 w-full flex items-end gap-1 pb-1" id="cpu-bars">
+                               <!-- Bars generated by JS -->
+                           </div>
+                       </div>
+                       <div class="text-xs text-gray-500">8 Cores Active</div>
+                   </div>
+               </div>
+
+               <!-- Middle Section: Map & Logs -->
+               <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 h-[500px]">
+                   
+                   <!-- Visualizer (Canvas) -->
+                   <div class="lg:col-span-2 glass-panel rounded-xl p-1 relative flex flex-col">
+                       <div class="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur px-3 py-1 rounded border border-white/10">
+                           <h3 class="text-sm font-bold text-neon-blue"><i class="fas fa-globe-americas mr-2"></i>LIVE TRAFFIC VISUALIZER</h3>
+                       </div>
+                       <div class="absolute top-4 right-4 z-10 flex gap-2">
+                           <button class="w-8 h-8 rounded bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 transition-colors" onclick="toggleMapMode()">
+                               <i class="fas fa-layer-group"></i>
+                           </button>
+                           <button class="w-8 h-8 rounded bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 transition-colors">
+                               <i class="fas fa-expand"></i>
+                           </button>
+                       </div>
+                       <canvas id="trafficCanvas" class="w-full h-full rounded-lg bg-black/40"></canvas>
+                       
+                       <!-- Overlay Stats on Canvas -->
+                       <div class="absolute bottom-4 left-4 right-4 flex justify-between pointer-events-none">
+                           <div class="bg-black/60 backdrop-blur px-3 py-2 rounded border border-white/10">
+                               <div class="text-xs text-gray-400">ACTIVE CONNECTIONS</div>
+                               <div class="text-xl font-mono text-white" id="active-connections">842</div>
+                           </div>
+                           <div class="bg-black/60 backdrop-blur px-3 py-2 rounded border border-white/10">
+                               <div class="text-xs text-gray-400">PACKETS/SEC</div>
+                               <div class="text-xl font-mono text-neon-blue" id="packets-sec">4,102</div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <!-- System Logs -->
+                   <div class="glass-panel rounded-xl p-0 flex flex-col overflow-hidden">
+                       <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+                           <h3 class="text-sm font-bold text-gray-300"><i class="fas fa-terminal mr-2 text-neon-green"></i>SYSTEM LOGS</h3>
+                           <span class="text-xs font-mono text-neon-green animate-pulse">● LIVE</span>
+                       </div>
+                       <div class="flex-1 overflow-y-auto p-4 font-mono text-xs space-y-2" id="log-container">
+                           <!-- Logs injected here -->
+                       </div>
+                       <div class="p-2 border-t border-white/10 bg-black/20">
+                           <input type="text" placeholder=">" class="w-full bg-transparent border-none text-neon-green focus:outline-none font-mono text-sm">
+                       </div>
+                   </div>
+               </div>
+
+               <!-- Bottom Section: Threat Table -->
+               <div class="glass-panel rounded-xl overflow-hidden">
+                   <div class="p-4 border-b border-white/10 flex justify-between items-center">
+                       <h3 class="text-lg font-bold text-white">ACTIVE THREATS</h3>
+                       <div class="flex gap-2">
+                           <button class="px-3 py-1 text-xs rounded border border-neon-blue text-neon-blue hover:bg-neon-blue hover:text-black transition-all">QUARANTINE ALL</button>
+                           <button class="px-3 py-1 text-xs rounded border border-white/20 text-gray-400 hover:bg-white/10 transition-all">EXPORT</button>
+                       </div>
+                   </div>
+                   <div class="overflow-x-auto">
+                       <table class="w-full text-left text-sm text-gray-400">
+                           <thead class="bg-white/5 text-xs uppercase font-mono">
+                               <tr>
+                                   <th class="px-6 py-3">Severity</th>
+                                   <th class="px-6 py-3">Source IP</th>
+                                   <th class="px-6 py-3">Type</th>
+                                   <th class="px-6 py-3">Target</th>
+                                   <th class="px-6 py-3">Status</th>
+                                   <th class="px-6 py-3">Action</th>
+                               </tr>
+                           </thead>
+                           <tbody class="divide-y divide-white/5" id="threat-table-body">
+                               <!-- Rows generated by JS -->
+                           </tbody>
+                       </table>
+                   </div>
+               </div>
+
+           </div>
+       </main>
+   </div>
+
+   <script>
+       /* --- 1. Boot Sequence --- */
+       const bootScreen = document.getElementById('boot-screen');
+       const bootLog = document.getElementById('boot-log');
+       const bootBar = document.getElementById('boot-bar');
+       const bootPercent = document.getElementById('boot-percent');
+       
+       const bootMessages = [
+           "Initializing BIOS...",
+           "Loading kernel modules...",
+           "Mounting file systems...",
+           "Starting network daemon...",
+           "Establishing secure connection...",
+           "Decrypting user credentials...",
+           "Loading Stackly dashboard assets...",
+           "Optimizing visual interface...",
+           "Access Granted."
+       ];
+
+       async function runBootSequence() {
+           let progress = 0;
+           for (let i = 0; i < bootMessages.length; i++) {
+               await new Promise(r => setTimeout(r, 400 + Math.random() * 600));
+               const div = document.createElement('div');
+               div.textContent = `> ${bootMessages[i]}`;
+               div.className = "mb-1 opacity-0 animate-[fadeIn_0.3s_ease-in_forwards]";
+               bootLog.appendChild(div);
+               bootLog.scrollTop = bootLog.scrollHeight;
+               
+               progress = Math.round(((i + 1) / bootMessages.length) * 100);
+               bootBar.style.width = `${progress}%`;
+               bootPercent.textContent = `${progress}%`;
+           }
+           
+           await new Promise(r => setTimeout(r, 500));
+           bootScreen.style.opacity = '0';
+           bootScreen.style.transition = 'opacity 0.8s ease';
+           setTimeout(() => {
+               bootScreen.style.display = 'none';
+               initDashboard();
+           }, 800);
+       }
+
+       /* --- 2. Clock --- */
+       function updateClock() {
+           const now = new Date();
+           document.getElementById('clock-time').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+           document.getElementById('clock-date').textContent = now.toISOString().split('T')[0];
+       }
+       setInterval(updateClock, 1000);
+       updateClock();
+
+       /* --- 3. Canvas Visualizer (Network Traffic) --- */
+       const canvas = document.getElementById('trafficCanvas');
+       const ctx = canvas.getContext('2d');
+       let width, height;
+       let particles = [];
+       let hubs = [];
+
+       function resizeCanvas() {
+           const parent = canvas.parentElement;
+           width = parent.clientWidth;
+           height = parent.clientHeight;
+           canvas.width = width;
+           canvas.height = height;
+           initHubs();
+       }
+
+       function initHubs() {
+           hubs = [
+               { x: width * 0.2, y: height * 0.5, type: 'server' },
+               { x: width * 0.8, y: height * 0.3, type: 'user' },
+               { x: width * 0.7, y: height * 0.8, type: 'user' },
+               { x: width * 0.4, y: height * 0.2, type: 'firewall' }
+           ];
+       }
+
+       class Packet {
+           constructor() {
+               this.reset();
+           }
+
+           reset() {
+               const startHub = hubs[Math.floor(Math.random() * hubs.length)];
+               let endHub = hubs[Math.floor(Math.random() * hubs.length)];
+               while (startHub === endHub) {
+                   endHub = hubs[Math.floor(Math.random() * hubs.length)];
+               }
+
+               this.x = startHub.x;
+               this.y = startHub.y;
+               this.targetX = endHub.x;
+               this.targetY = endHub.y;
+               
+               const angle = Math.atan2(this.targetY - this.y, this.targetX - this.x);
+               this.speed = 2 + Math.random() * 3;
+               this.vx = Math.cos(angle) * this.speed;
+               this.vy = Math.sin(angle) * this.speed;
+               
+               this.life = 1;
+               this.color = Math.random() > 0.9 ? '#ff003c' : '#00f3ff'; // Red for threats, Blue for normal
+               this.size = Math.random() * 2 + 1;
+           }
+
+           update() {
+               this.x += this.vx;
+               this.y += this.vy;
+               
+               const dist = Math.hypot(this.targetX - this.x, this.targetY - this.y);
+               if (dist < 10) {
+                   this.reset();
+               }
+           }
+
+           draw() {
+               ctx.beginPath();
+               ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+               ctx.fillStyle = this.color;
+               ctx.fill();
+               
+               // Trail
+               ctx.beginPath();
+               ctx.moveTo(this.x, this.y);
+               ctx.lineTo(this.x - this.vx * 4, this.y - this.vy * 4);
+               ctx.strokeStyle = this.color + '44'; // Transparent
+               ctx.lineWidth = this.size;
+               ctx.stroke();
+           }
+       }
+
+       function initParticles() {
+           particles = [];
+           for (let i = 0; i < 50; i++) {
+               particles.push(new Packet());
+           }
+       }
+
+       function animateCanvas() {
+           ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; // Fade effect
+           ctx.fillRect(0, 0, width, height);
+
+           // Draw Hubs
+           hubs.forEach(hub => {
+               ctx.beginPath();
+               ctx.arc(hub.x, hub.y, 6, 0, Math.PI * 2);
+               ctx.fillStyle = '#fff';
+               ctx.fill();
+               
+               // Glow
+               ctx.beginPath();
+               ctx.arc(hub.x, hub.y, 15, 0, Math.PI * 2);
+               ctx.fillStyle = hub.type === 'server' ? 'rgba(0, 243, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)';
+               ctx.fill();
+           });
+
+           // Draw Connections
+           ctx.beginPath();
+           ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+           ctx.lineWidth = 1;
+           for(let i=0; i<hubs.length; i++) {
+               for(let j=i+1; j<hubs.length; j++) {
+                   ctx.moveTo(hubs[i].x, hubs[i].y);
+                   ctx.lineTo(hubs[j].x, hubs[j].y);
+               }
+           }
+           ctx.stroke();
+
+           particles.forEach(p => {
+               p.update();
+               p.draw();
+           });
+
+           requestAnimationFrame(animateCanvas);
+       }
+
+       /* --- 4. Logs & Data Simulation --- */
+       const logContainer = document.getElementById('log-container');
+       const logMessages = [
+           { type: 'info', text: 'Firewall rule updated: Block port 8080' },
+           { type: 'success', text: 'Backup completed successfully [Node 04]' },
+           { type: 'warning', text: 'High latency detected on Gateway B' },
+           { type: 'error', text: 'Unauthorized access attempt from 192.168.0.45' },
+           { type: 'info', text: 'User Admin_01 logged in from 10.0.0.5' },
+           { type: 'success', text: 'Intrusion Prevention System active' },
+           { type: 'error', text: 'DDoS pattern detected. Mitigating...' },
+           { type: 'info', text: 'Scanning system integrity...' }
+       ];
+
+       function addLog() {
+           const msg = logMessages[Math.floor(Math.random() * logMessages.length)];
+           const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+           
+           const div = document.createElement('div');
+           div.className = 'flex gap-2 hover:bg-white/5 p-1 rounded cursor-default transition-colors';
+           
+           let colorClass = 'text-gray-400';
+           let icon = 'fa-info-circle';
+           if (msg.type === 'error') { colorClass = 'text-red-400'; icon = 'fa-exclamation-triangle'; }
+           if (msg.type === 'success') { colorClass = 'text-green-400'; icon = 'fa-check'; }
+           if (msg.type === 'warning') { colorClass = 'text-yellow-400'; icon = 'fa-exclamation-circle'; }
+
+           div.innerHTML = `
+               <span class="text-gray-600">[${time}]</span>
+               <i class="fas ${icon} ${colorClass} mt-0.5"></i>
+               <span class="${colorClass}">${msg.text}</span>
+           `;
+           
+           logContainer.appendChild(div);
+           logContainer.scrollTop = logContainer.scrollHeight;
+
+           if (logContainer.children.length > 50) {
+               logContainer.removeChild(logContainer.firstChild);
+           }
+       }
+
+       /* --- 5. Threat Table --- */
+       const threatData = [
+           { sev: 'High', ip: '185.220.101.42', type: 'SQL Injection', target: 'Database_Srv01', status: 'Active' },
+           { sev: 'Medium', ip: '45.142.214.58', type: 'Port Scan', target: 'Firewall_Main', status: 'Blocked' },
+           { sev: 'Critical', ip: '192.168.1.105', type: 'Brute Force', target: 'Admin_Panel', status: 'Quarantined' },
+           { sev: 'Low', ip: '103.253.145.12', type: 'Spam Bot', target: 'Mail_Srv', status: 'Monitoring' }
+       ];
+
+       function renderThreats() {
+           const tbody = document.getElementById('threat-table-body');
+           tbody.innerHTML = '';
+           threatData.forEach(t => {
+               let sevColor = t.sev === 'Critical' ? 'text-red-500 animate-pulse' : (t.sev === 'High' ? 'text-orange-500' : 'text-yellow-500');
+               let statusColor = t.status === 'Active' ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-green-500/20 text-green-400 border-green-500/30';
+               
+               const tr = document.createElement('tr');
+               tr.className = 'hover:bg-white/5 transition-colors';
+               tr.innerHTML = `
+                   <td class="px-6 py-4 font-bold ${sevColor}">${t.sev}</td>
+                   <td class="px-6 py-4 font-mono text-gray-300">${t.ip}</td>
+                   <td class="px-6 py-4">${t.type}</td>
+                   <td class="px-6 py-4 text-gray-400">${t.target}</td>
+                   <td class="px-6 py-4"><span class="px-2 py-1 rounded text-xs border ${statusColor}">${t.status}</span></td>
+                   <td class="px-6 py-4">
+                       <button class="text-neon-blue hover:text-white transition-colors"><i class="fas fa-ban"></i> Block</button>
+                   </td>
+               `;
+               tbody.appendChild(tr);
+           });
+       }
+
+       /* --- 6. CPU Bars Animation --- */
+       function initCpuBars() {
+           const container = document.getElementById('cpu-bars');
+           for(let i=0; i<20; i++) {
+               const bar = document.createElement('div');
+               bar.className = 'w-1 bg-neon-blue/50 rounded-t';
+               bar.style.height = Math.random() * 100 + '%';
+               container.appendChild(bar);
+           }
+       }
+
+       function updateCpu() {
+           const bars = document.getElementById('cpu-bars').children;
+           const val = document.getElementById('cpu-val');
+           let total = 0;
+           for(let bar of bars) {
+               const h = Math.random() * 100;
+               bar.style.height = h + '%';
+               bar.style.opacity = (h/100) + 0.2;
+               total += h;
+           }
+           val.innerText = Math.round(total / bars.length) + '%';
+       }
+
+       /* --- 7. Initialization --- */
+       function initDashboard() {
+           resizeCanvas();
+           initParticles();
+           animateCanvas();
+           renderThreats();
+           initCpuBars();
+           
+           // Start Loops
+           setInterval(addLog, 1500);
+           setInterval(updateCpu, 1000);
+           
+           // Randomize numbers
+           setInterval(() => {
+               document.getElementById('active-connections').innerText = Math.floor(800 + Math.random() * 200);
+               document.getElementById('packets-sec').innerText = Math.floor(4000 + Math.random() * 1000).toLocaleString();
+               document.getElementById('blocked-count').innerText = Math.floor(14293 + Math.random() * 50).toLocaleString();
+           }, 2000);
+       }
+
+       window.addEventListener('resize', resizeCanvas);
+       
+       // Start Boot
+       runBootSequence();
+
+       // Toggle Map Mode (Visual Effect)
+       let mapMode = 0;
+       function toggleMapMode() {
+           mapMode = (mapMode + 1) % 2;
+           if(mapMode === 1) {
+               canvas.style.filter = "hue-rotate(90deg) invert(1)";
+           } else {
+               canvas.style.filter = "none";
+           }
+       }
+
+   </script>
+</body>
+</html>

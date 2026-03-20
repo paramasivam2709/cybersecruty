@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Stackly - Cyber Defense That Evolves Daily</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #22c55e;
+            border-radius: 4px;
+        }
+
+        /* Aurora Background Animation */
+        .aurora-bg {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(34, 197, 94, 0.05) 0%, transparent 70%);
+            animation: auroraMove 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes auroraMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5%, 5%) rotate(5deg); }
+            50% { transform: translate(-5%, 10%) rotate(-5deg); }
+            75% { transform: translate(10%, -5%) rotate(3deg); }
+        }
+
+        /* Glowing Orb Animation */
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .glow-orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.6) 0%, transparent 70%);
+            top: 10%;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .glow-orb-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.4) 0%, transparent 70%);
+            bottom: 20%;
+            left: -50px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        /* Text Reveal Animation */
+        .reveal-text {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-text.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #22c55e 0%, #4ade80 50%, #22c55e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Navigation Blur */
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(5, 5, 5, 0.8);
+        }
+
+        /* Button Glow */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-glow::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(90deg, #22c55e, #4ade80, #22c55e);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            filter: blur(10px);
+        }
+
+        .btn-glow:hover::after {
+            opacity: 0.6;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Noise Texture */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 1000;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Noise Overlay -->
+    <div class="noise"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <div class="flex items-center gap-2 group cursor-pointer">
+
+    <!-- Logo Image -->
+    <img src="img/logo-green.png" 
+    class="w-8 h-8 object-contain transition-transform group-hover:scale-110">
+
+    <!-- Logo Text -->
+    <span class="text-xl font-bold tracking-tight">
+        Stackly<span class="text-green-500">.</span>
+    </span>
+
+</div>
+
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="index.html" class="hover:text-green-400 transition-colors">Home</a>
+                <a href="about.html" class="hover:text-green-400 transition-colors text-green-400">About us</a>
+                <div class="relative group">
+                    <a href="services.html" class="flex items-center gap-1 hover:text-green-400 transition-colors">
+                        Services
+                    </a>
+                </div>
+                <a href="blog.html" class="hover:text-green-400 transition-colors">Blog</a>
+                <a href="contact.html" class="hover:text-green-400 transition-colors">Contact</a>
+            </div>
+
+            <a href="login.html">
+                <button class="hidden md:flex items-center gap-2 px-6 py-2.5 bg-green-500 text-black font-semibold rounded-full hover:bg-green-400 transition-all hover:scale-105 btn-glow">
+                    Login
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </a>
+
+            <button class="md:hidden text-white" id="mobileMenuBtn">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 bg-black/95 z-40 hidden flex-col items-center justify-center gap-8 text-xl">
+        <a href="index.html" class="hover:text-green-400 transition-colors">Home</a>
+        <a href="about.html" class="hover:text-green-400 transition-colors text-green-400">About us</a>
+        <a href="services.html" class="hover:text-green-400 transition-colors">Services</a>
+        <a href="blog.html" class="hover:text-green-400 transition-colors">Blog</a>
+        <a href="contact.html" class="hover:text-green-400 transition-colors">Contact</a>
+        <a href="login.html">
+            <button class="px-8 py-3 bg-green-500 text-black font-bold rounded-full">Login</button>
+        </a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center overflow-hidden pt-20">
+        <!-- Background Effects -->
+        <div class="aurora-bg"></div>
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+
+        <!-- Grid Pattern -->
+        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(34,197,94,0.3) 1px, transparent 0); background-size: 50px 50px;"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-semibold tracking-widest uppercase text-green-400 mb-6 reveal-text">
+                About Stackly
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight reveal-text" style="transition-delay: 0.1s;">
+                Pioneering the Future of<br>
+                <span class="gradient-text">Cybersecurity</span>
+            </h1>
+
+            <p class="text-gray-400 text-lg max-w-3xl mx-auto mt-6 reveal-text" style="transition-delay: 0.2s;">
+                Founded in 2020, Stackly emerged from a simple belief: cybersecurity shouldn't be a burden—it should be an intelligent partner that grows stronger every day.
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4 mt-8 reveal-text" style="transition-delay: 0.3s;">
+               <a href="404.html">
+                    <button class="px-8 py-4 bg-green-500 text-black font-bold rounded-full hover:bg-green-400 transition-all hover:scale-105 btn-glow flex items-center gap-2">
+                        Get Started Today
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </button>
+                </a>
+                <a href="404.html">
+                    <button class="px-8 py-4 border border-gray-700 text-white font-semibold rounded-full hover:border-green-500 hover:text-green-400 transition-all flex items-center gap-2 group">
+                        Learn More
+                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i data-lucide="chevron-down" class="w-6 h-6 text-gray-500"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about-company" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Left Content -->
+                <div class="space-y-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-semibold tracking-widest uppercase text-green-400 reveal-text">
+                        Our Story
+                    </div>
+
+                    <h2 class="text-4xl md:text-5xl font-bold leading-tight reveal-text" style="transition-delay: 0.1s;">
+                        Building Trust Through<br><span class="gradient-text">Innovation</span>
+                    </h2>
+
+                    <p class="text-gray-400 text-lg reveal-text" style="transition-delay: 0.2s;">
+                        At Stackly, we believe cyber threats don't sleep and neither should your defense. We build intelligent, evolving security systems powered by AI and real-time data.
+                    </p>
+
+                    <div class="space-y-6 reveal-text" style="transition-delay: 0.3s;">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="target" class="w-6 h-6 text-green-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">Our Mission</h3>
+                                <p class="text-gray-400">To democratize advanced cybersecurity through AI-driven solutions that adapt and evolve, making enterprise-grade protection accessible to businesses of all sizes.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="eye" class="w-6 h-6 text-green-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">Our Vision</h3>
+                                <p class="text-gray-400">A world where every organization, regardless of size, can defend against cyber threats with confidence, backed by systems that learn and improve continuously.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="users" class="w-6 h-6 text-green-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">Our Team</h3>
+                                <p class="text-gray-400">Led by former NSA cybersecurity experts and AI researchers from top universities, our team combines decades of experience with cutting-edge innovation.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-8 pt-8 border-t border-gray-800 reveal-text" style="transition-delay: 0.4s;">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-400 mb-1">2020</div>
+                            <div class="text-xs text-gray-500 uppercase tracking-wider">Founded</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-400 mb-1">50+</div>
+                            <div class="text-xs text-gray-500 uppercase tracking-wider">Team Members</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-400 mb-1">25+</div>
+                            <div class="text-xs text-gray-500 uppercase tracking-wider">Countries Served</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Visual -->
+                <div class="relative reveal-text" style="transition-delay: 0.5s;">
+                    <div class="relative rounded-2xl overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80" alt="Team Collaboration" class="w-full h-[500px] object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+
+                        <!-- Floating Achievement Cards -->
+                        <div class="absolute top-6 left-6 glass p-4 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="award" class="w-5 h-5 text-black"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-white">#1 AI Security</div>
+                                    <div class="text-xs text-gray-400">Gartner 2024</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="absolute bottom-6 right-6 glass p-4 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="trending-up" class="w-5 h-5 text-black"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-white">500% Growth</div>
+                                    <div class="text-xs text-gray-400">Last 2 Years</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-semibold tracking-widest uppercase text-green-400 mb-6 reveal-text">
+                    Our Values
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold leading-tight reveal-text" style="transition-delay: 0.1s;">
+                    What Drives Us Forward
+                </h2>
+                <p class="text-gray-400 text-lg mt-4 reveal-text" style="transition-delay: 0.2s;">
+                    The principles that guide every decision we make and every solution we build.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Value 1 -->
+                <div class="glass p-8 rounded-2xl text-center hover:border-green-500/50 border border-gray-700 transition-all reveal-text" style="transition-delay: 0.1s;">
+                    <div class="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="brain" class="w-8 h-8 text-green-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Innovation First</h3>
+                    <p class="text-gray-400">We push the boundaries of what's possible in cybersecurity, leveraging cutting-edge AI and machine learning to stay ahead of emerging threats.</p>
+                </div>
+
+                <!-- Value 2 -->
+                <div class="glass p-8 rounded-2xl text-center hover:border-green-500/50 border border-gray-700 transition-all reveal-text" style="transition-delay: 0.2s;">
+                    <div class="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-green-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Security Above All</h3>
+                    <p class="text-gray-400">Every decision we make prioritizes the security and protection of our clients' digital assets, with zero compromises on safety.</p>
+                </div>
+
+                <!-- Value 3 -->
+                <div class="glass p-8 rounded-2xl text-center hover:border-green-500/50 border border-gray-700 transition-all reveal-text" style="transition-delay: 0.3s;">
+                    <div class="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="users" class="w-8 h-8 text-green-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Partnership Mindset</h3>
+                    <p class="text-gray-400">We work alongside our clients as trusted partners, understanding their unique challenges and providing tailored solutions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-green-900/10 to-transparent"></div>
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6 reveal-text">Ready to Join Our Mission?</h2>
+            <p class="text-gray-400 text-lg mb-8 reveal-text" style="transition-delay: 0.1s;">
+                Experience the power of AI-driven cybersecurity that evolves with every threat.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 reveal-text" style="transition-delay: 0.2s;">
+                <a href="404.html">
+                    <button class="px-8 py-4 bg-green-500 text-black font-bold rounded-full hover:bg-green-400 transition-all hover:scale-105 btn-glow">
+                        Start Free Trial
+                    </button>
+                </a>
+                <a href="404.html">
+                    <button class="px-8 py-4 border border-gray-700 text-white font-semibold rounded-full hover:border-green-500 hover:text-green-400 transition-all">
+                        Contact Sales
+                    </button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 group cursor-pointer">
+
+    <!-- Logo Image -->
+    <img src="img/logo-green.png" 
+    class="w-8 h-8 object-contain transition-transform group-hover:scale-110">
+
+    <!-- Logo Text -->
+    <span class="text-xl font-bold tracking-tight">
+        Stackly<span class="text-green-500">.</span>
+    </span>
+
+</div>
+                    <p class="text-gray-500 text-sm">AI-driven cybersecurity that evolves with every threat.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="services.html" class="hover:text-green-400 transition-colors">Features</a></li>
+                        <li><a href="pricing.html" class="hover:text-green-400 transition-colors">Pricing</a></li>
+                        <li><a href="security.html" class="hover:text-green-400 transition-colors">Security</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="about.html" class="hover:text-green-400 transition-colors">About</a></li>
+                        <li><a href="blog.html" class="hover:text-green-400 transition-colors">Blog</a></li>
+                        <li><a href="careers.html" class="hover:text-green-400 transition-colors">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <div class="flex gap-4">
+                        <a href="404.html" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-green-500 hover:text-black transition-all">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="404.html" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-green-500 hover:text-black transition-all">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                        <a href="404.html" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-green-500 hover:text-black transition-all">
+                            <i data-lucide="github" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-600 text-sm">© 2024 Stackly Security. All rights reserved.</p>
+                <div class="flex gap-6 text-sm text-gray-600">
+                    <a href="404.html" class="hover:text-green-400 transition-colors">Privacy Policy</a>
+                    <a href="404.html" class="hover:text-green-400 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Navigation Scroll Effect
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                navbar.classList.add('nav-blur');
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('nav-blur');
+                navbar.classList.remove('shadow-lg');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+
+        // Intersection Observer for Reveal Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-text').forEach(el => observer.observe(el));
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex');
+                }
+            });
+        });
+
+        // Button Click Feedback
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Create ripple effect
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('absolute', 'rounded-full', 'bg-white', 'opacity-30', 'animate-ping');
+
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+    </script>
+</body>
+</html>
