@@ -132,37 +132,41 @@
            <div class="flex items-center gap-2 group cursor-pointer">
 
     <!-- Logo Image -->
-    <img src="img/logo-green.png" 
-    class="w-8 h-8 object-contain transition-transform group-hover:scale-110">
+   <a href="index.html">
+       <img src="img/logo-green.png" 
+            class="w-8 h-8 object-contain transition-transform group-hover:scale-110">
+   </a>
 
     <!-- Logo Text -->
-    <span class="text-xl font-bold tracking-tight">
-        Stackly<span class="text-green-500">.</span>
-    </span>
+    <a href="index.html">
+        <span class="text-xl font-bold tracking-tight">
+            Stackly<span class="text-green-500">.</span>
+        </span>
+    </a>
 
 </div>
 
            <!-- Navigation -->
            <nav class="flex-1 py-6 px-3 space-y-1">
-               <a href="#" class="flex items-center px-3 py-3 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 group relative overflow-hidden">
+               <a href="user.html" class="flex items-center px-3 py-3 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 group relative overflow-hidden">
                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                    <i class="fas fa-home w-6 text-center"></i>
                    <span class="hidden lg:block ml-3 font-medium">Overview</span>
                </a>
-               <a href="#" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
+               <a href="404.html" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
                    <i class="fas fa-chart-pie w-6 text-center group-hover:text-indigo-400 transition-colors"></i>
                    <span class="hidden lg:block ml-3 font-medium">Analytics</span>
                </a>
-               <a href="#" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
+               <a href="404.html" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
                    <i class="fas fa-folder-open w-6 text-center group-hover:text-cyan-400 transition-colors"></i>
                    <span class="hidden lg:block ml-3 font-medium">Projects</span>
                    <span class="hidden lg:flex ml-auto bg-indigo-500/20 text-indigo-300 text-xs px-2 py-0.5 rounded-full">12</span>
                </a>
-               <a href="#" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
+               <a href="404.html" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
                    <i class="fas fa-users w-6 text-center group-hover:text-pink-400 transition-colors"></i>
                    <span class="hidden lg:block ml-3 font-medium">Team</span>
                </a>
-               <a href="#" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
+               <a href="404.html" class="flex items-center px-3 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
                    <i class="fas fa-wallet w-6 text-center group-hover:text-emerald-400 transition-colors"></i>
                    <span class="hidden lg:block ml-3 font-medium">Billing</span>
                </a>
@@ -193,6 +197,9 @@
                    </div>
                    <i class="hidden lg:block fas fa-chevron-right ml-auto text-xs text-gray-500"></i>
                </div>
+               <button id="logout-btn" class="w-full mt-2 px-3 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white text-sm font-medium transition-all flex items-center justify-center gap-2">
+                   <i class="fas fa-sign-out-alt"></i> Logout
+               </button>
            </div>
        </aside>
 
@@ -205,14 +212,18 @@
                    <p class="text-sm text-gray-400">Here's what's happening with your projects today.</p>
                </div>
                <div class="flex items-center gap-4">
-                   <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all relative">
-                       <i class="fas fa-bell"></i>
-                       <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full animate-ping"></span>
-                       <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full"></span>
-                   </button>
-                   <button class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-all flex items-center gap-2 shadow-lg shadow-indigo-500/25">
-                       <i class="fas fa-plus"></i> New Project
-                   </button>
+                  <a href="404.html">
+                     <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all relative">
+                         <i class="fas fa-bell"></i>
+                         <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full animate-ping"></span>
+                         <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full"></span>
+                     </button>
+                  </a>
+                   <a href="404.html">
+                       <button class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-all flex items-center gap-2 shadow-lg shadow-indigo-500/25">
+                           <i class="fas fa-plus"></i> New Project
+                       </button>
+                   </a>
                </div>
            </header>
 
@@ -395,7 +406,7 @@
                                            <div class="text-xs text-gray-400">Last changed 2d ago</div>
                                        </div>
                                    </div>
-                                   <button class="text-xs text-indigo-400 hover:text-indigo-300">Update</button>
+                                  <a href="404.html"><button class="text-xs text-indigo-400 hover:text-indigo-300">Update</button></a>
                                </div>
                            </div>
                        </div>
@@ -408,7 +419,7 @@
                    <div class="lg:col-span-2 glass-card rounded-2xl p-6 slide-in" style="animation-delay: 0.8s;">
                        <div class="flex justify-between items-center mb-6">
                            <h3 class="text-lg font-semibold text-white">Recent Projects</h3>
-                           <button class="text-sm text-indigo-400 hover:text-indigo-300">View All</button>
+                           <a href="404.html"><button class="text-sm text-indigo-400 hover:text-indigo-300">View All</button></a>
                        </div>
                        <div class="space-y-4">
                            <div class="group flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:border-indigo-500/30 transition-all cursor-pointer">
@@ -517,6 +528,15 @@
            randomStat.style.opacity = '0.5';
            setTimeout(() => randomStat.style.opacity = '1', 200);
        }, 3000);
+
+       // Logout Functionality
+       document.getElementById('logout-btn').addEventListener('click', function() {
+           // Clear any stored session data if exists
+           localStorage.clear();
+           sessionStorage.clear();
+           // Redirect to login page
+           window.location.href = 'login.html';
+       });
    </script>
 </body>
 </html>
