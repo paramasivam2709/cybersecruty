@@ -557,64 +557,76 @@
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-gray-800 py-12">
+    <!-- Footer -->
+    <footer class="bg-[#020202] border-t border-green-800/20 py-16 text-gray-300">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <div class="flex items-center gap-2 group cursor-pointer">
-
-    <!-- Logo Image -->
-    <a href="index.html">
-        <img src="img/logo-green.png" 
-            class="w-8 h-8 object-contain transition-transform group-hover:scale-110">
-    </a>
-
-    <!-- Logo Text -->
-    <a href="index.html">
-        <span class="text-xl font-bold tracking-tight">
-            Stackly<span class="text-green-500">.</span>
-        </span>
-    </a>
-
-</div>
-                    <p class="text-gray-500 text-sm">AI-driven cybersecurity that evolves with every threat.</p>
+            <div class="grid gap-10 xl:grid-cols-[1.6fr_1fr_1fr_1.2fr]">
+                <div class="space-y-5">
+                    <a href="index.html" class="inline-flex items-center gap-3">
+                        <img src="img/logo-green.png" class="w-9 h-9 object-contain" alt="Stackly logo">
+                        <span class="text-xl font-bold tracking-tight">Stackly<span class="text-green-400">.</span></span>
+                    </a>
+                    <p class="text-gray-400 max-w-md">AI-driven cybersecurity that adapts to every threat, protects every network, and keeps your business one step ahead.</p>
+                    <div class="grid gap-2 sm:grid-cols-2 text-xs uppercase tracking-[0.2em] text-green-400 font-semibold">
+                        <span class="inline-flex items-center gap-2">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i> 24/7 monitoring
+                        </span>
+                        <span class="inline-flex items-center gap-2">
+                            <i data-lucide="zap" class="w-4 h-4"></i> Adaptive AI
+                        </span>
+                        <span class="inline-flex items-center gap-2">
+                            <i data-lucide="lock" class="w-4 h-4"></i> Zero trust
+                        </span>
+                        <span class="inline-flex items-center gap-2">
+                            <i data-lucide="star" class="w-4 h-4"></i> Rapid response
+                        </span>
+                    </div>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Product</h4>
-                    <ul class="space-y-2 text-sm text-gray-500">
-                        <li><a href="services.html" class="hover:text-green-400 transition-colors">Features</a></li>
-                        <li><a href="pricing.html" class="hover:text-green-400 transition-colors">Pricing</a></li>
-                        <li><a href="security.html" class="hover:text-green-400 transition-colors">Security</a></li>
+                    <h4 class="font-semibold mb-4 text-white">Product</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="services.html" class="hover:text-green-300 transition-colors">Services</a></li>
+                        <li><a href="blog.html" class="hover:text-green-300 transition-colors">Blog</a></li>
+                        <li><a href="contact.html" class="hover:text-green-300 transition-colors">Contact</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Company</h4>
-                    <ul class="space-y-2 text-sm text-gray-500">
-                        <li><a href="about.html" class="hover:text-green-400 transition-colors">About</a></li>
-                        <li><a href="blog.html" class="hover:text-green-400 transition-colors">Blog</a></li>
-                        <li><a href="careers.html" class="hover:text-green-400 transition-colors">Careers</a></li>
+                    <h4 class="font-semibold mb-4 text-white">Company</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="about.html" class="hover:text-green-300 transition-colors">About</a></li>
+                        <li><a href="login.html" class="hover:text-green-300 transition-colors">Login</a></li>
+                        <li><a href="register.html" class="hover:text-green-300 transition-colors">Register</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Connect</h4>
-                    <div class="flex gap-4">
-                        <a href="404.html" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-green-500 hover:text-black transition-all">
-                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                <div class="space-y-5">
+                    <div class="flex items-center justify-between gap-3">
+                        <h4 class="font-semibold text-white">Stay Updated</h4>
+                        <span class="px-3 py-1 rounded-full bg-green-500/10 text-green-300 text-xs uppercase tracking-[0.2em]">Secure</span>
+                    </div>
+                    <p class="text-sm text-gray-400">Subscribe for alerts, updates, and product launches tailored to your security needs.</p>
+                    <form action="#" class="relative">
+                        <input type="email" placeholder="Enter your email" class="w-full rounded-full border border-green-800/40 bg-[#0a0a0a] px-5 py-3 pr-32 text-sm text-white outline-none focus:border-green-400" />
+                        <button type="submit" class="absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-green-500 px-5 py-2.5 text-black text-sm font-semibold hover:bg-green-400 transition">Subscribe</button>
+                    </form>
+                    <div class="flex items-center gap-3">
+                        <a href="404.html" class="w-11 h-11 rounded-full bg-white/10 text-gray-200 flex items-center justify-center hover:bg-green-500/20 hover:text-green-200 transition">
+                            <i data-lucide="twitter" class="w-5 h-5 stroke-current fill-current"></i>
                         </a>
-                        <a href="404.html" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-green-500 hover:text-black transition-all">
-                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        <a href="404.html" class="w-11 h-11 rounded-full bg-white/10 text-gray-200 flex items-center justify-center hover:bg-green-500/20 hover:text-green-200 transition">
+                            <i data-lucide="linkedin" class="w-5 h-5 stroke-current fill-current"></i>
                         </a>
-                        <a href="404.html" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-green-500 hover:text-black transition-all">
-                            <i data-lucide="github" class="w-5 h-5"></i>
+                        <a href="404.html" class="w-11 h-11 rounded-full bg-white/10 text-gray-200 flex items-center justify-center hover:bg-green-500/20 hover:text-green-200 transition">
+                            <i data-lucide="github" class="w-5 h-5 stroke-current fill-current"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-gray-600 text-sm">© 2024 Stackly Security. All rights reserved.</p>
-                <div class="flex gap-6 text-sm text-gray-600">
-                    <a href="404.html" class="hover:text-green-400 transition-colors">Privacy Policy</a>
-                    <a href="404.html" class="hover:text-green-400 transition-colors">Terms of Service</a>
+            <div class="mt-12 border-t border-green-800/20 pt-8 flex flex-col gap-4 text-sm text-gray-500 md:flex-row md:items-center md:justify-between">
+                <p>© 2024 Stackly Security. All rights reserved.</p>
+                <div class="flex flex-wrap gap-6">
+                    <a href="404.html" class="hover:text-green-300 transition-colors">Privacy Policy</a>
+                    <a href="404.html" class="hover:text-green-300 transition-colors">Terms of Service</a>
+                    <a href="404.html" class="hover:text-green-300 transition-colors">Security</a>
                 </div>
             </div>
         </div>
