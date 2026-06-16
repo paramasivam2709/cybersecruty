@@ -2,56 +2,182 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Register</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly Sign Up</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#050505;
+overflow-x:hidden;
+overflow-y:auto;
+padding:24px 16px;
+}
+
+.signup-card{
+width:430px;
+max-width:100%;
+background:#0d0d0d;
+padding:40px;
+border-radius:24px;
+border:1px solid rgba(34,197,94,.2);
+box-shadow:0 0 30px rgba(34,197,94,.15);
+}
+
+.logo{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+margin-bottom:25px;
+}
+
+.logo img{
+width:45px;
+}
+
+.logo h2{
+color:#fff;
+font-weight:800;
+}
+
+.logo span{
+color:#22c55e;
+}
+
+h3{
+text-align:center;
+color:#fff;
+margin-bottom:25px;
+}
+
+input,select{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+background:#141414;
+border:1px solid #222;
+border-radius:12px;
+color:#fff;
+}
+
+input:focus,
+select:focus{
+outline:none;
+border-color:#22c55e;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:40px;
+background:#22c55e;
+color:#000;
+font-weight:700;
+cursor:pointer;
+}
+
+button:hover{
+background:#2ee66b;
+}
+
+.login-link{
+text-align:center;
+margin-top:18px;
+color:#888;
+}
+
+.login-link a{
+color:#22c55e;
+text-decoration:none;
+font-weight:600;
+}
+
+.back-btn{
+display:block;
+text-align:center;
+margin-top:15px;
+color:#22c55e;
+text-decoration:none;
+}
+
+@media (max-width:480px){
+.signup-card{
+padding:28px 20px;
+}
+}
+
+@media (max-height:760px){
+body{
+align-items:flex-start;
+}
+}
+</style>
 </head>
+<body>
 
-<body class="bg-black text-white flex items-center justify-center min-h-screen">
+<div class="signup-card">
 
-<div class="p-8 rounded-xl border border-gray-700 w-96 text-center">
+<div class="logo">
+<img src="img/logo-green.webp" alt="Stackly logo">
+<h2>Stackly<span>.</span></h2>
+</div>
 
-<h2 class="text-2xl mb-4">Create Account</h2>
+<h3>Create Account</h3>
 
-<input type="text" id="name" placeholder="Name"
-class="w-full p-3 mb-3 bg-black border border-gray-600 rounded">
+<form onsubmit="signup(event)">
 
-<input type="email" id="email" placeholder="Email"
-class="w-full p-3 mb-3 bg-black border border-gray-600 rounded">
+<input type="text" placeholder="Full Name" required>
 
-<input type="password" id="password" placeholder="Password"
-class="w-full p-3 mb-3 bg-black border border-gray-600 rounded">
+<input type="email" id="email" placeholder="Email Address" required>
 
-<p id="msg" class="text-red-500 text-sm mb-3 hidden">Fill all fields</p>
+<input type="password" placeholder="Password" required>
 
-<button onclick="registerUser()" 
-class="w-full py-3 bg-green-500 text-black rounded-full">
-Register
-</button>
+<select id="role">
+<option value="user">User</option>
+<option value="admin">Admin</option>
+</select>
 
-<a href="login.html" class="block mt-4 text-green-400">
-Already have account? Login
-</a>
+<button>Create Account</button>
+
+</form>
+
+<div class="login-link">
+Already have an account?
+<a href="login.html">Login</a>
+</div>
+
+<a href="index.html" class="back-btn">← Back to Home</a>
 
 </div>
 
 <script>
-function registerUser() {
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
-    let msg = document.getElementById("msg");
+function signup(e){
+e.preventDefault();
 
-    if (!name || !email || !password) {
-        msg.classList.remove("hidden");
-        return;
-    }
+let email=document.getElementById("email").value;
+let role=document.getElementById("role").value;
 
-    msg.classList.add("hidden");
-
-    alert("Registered Successfully ✅");
-
-    // redirect only (no storage)
-    window.location.href = "login.html";
+if(role==="admin"){
+window.location.href=
+"admin-dashboard.html?email="+encodeURIComponent(email);
+}else{
+window.location.href=
+"user-dashboard.html?email="+encodeURIComponent(email);
+}
 }
 </script>
 
